@@ -5,7 +5,12 @@
 #include"CTYPE.H"
 #include"STDIO.H"
 #include"stdlib.h"
-
+/*
+ * 修改:zlf
+ * 时间:2017-05-19
+ * 描述:添加mqtt协议头文件
+ */
+#include"mqtt.h"	
 //----------------------------------------------------------------
 #ifndef BIN
 #define BIN
@@ -556,7 +561,7 @@ void main()
 						HR_CHEAK();							//湿度检测
 //						ds_data7 = 0;
 					}
-				CIPSEND();				
+				CIPSEND();	//发送数据			
 			}
 
 /*		if(ds_data7==3)
@@ -676,7 +681,7 @@ void init()
 	SM1 = 1;
 	REN = 1;				//允许UART0接收数据
 
-	//UART1设置
+	//UART1设置(GPRS串口)
 	S2CON |= B0001_0000;	//设置UART1为工作模式0，8位可变波特率模式（UART1只有2中工作模式）,允许UART1接收数据
 
 	//外部中断0设置
@@ -1240,7 +1245,7 @@ void CIPSTART()
 	while(uart1_B==0)
 		{
 			gsm_rcv_clrcnt = 0;
-			SendStr1( "AT+CIPSTART=\"TCP\",\"120.77.39.67\",\"10002\"\r\n" );			//
+			SendStr1( "AT+CIPSTART=\"TCP\",\"123.207.38.80\",\"8088\"\r\n" );			//
 			SendStr0( "U0 CIPSTART\r\n" );
 			ds_data4 = 0;						//发送命令后延时
 //			while(ds_data4!=5);
@@ -1473,9 +1478,9 @@ void CIPSEND()
 			send_B = 0;
 			send_BT= 0;
 
-			for(;uart1_cnt1!=(gsm_cnt-1);)
+			for(;uart1_cnt1!=(gsm_cnt-1);)	  //判断返回的发送结果(从一行开始处)
 				{	
-					if((uart1_data[gsm_cnt]!=0x0d))
+					if((uart1_data[gsm_cnt]!=0x0d))	//不是换行符，储存
 						{
 							if((uart1_data[gsm_cnt]!=0x0a))
 								{
@@ -1484,7 +1489,7 @@ void CIPSEND()
 									//u0send('k');
 								}
 						}
-				   	if(uart1_data[gsm_cnt]==0x0d)
+				   	if(uart1_data[gsm_cnt]==0x0d)  //换行符，判断
 						{
 //							for(i=0;i!=gsm_rcv_clrcnt;i++)
 //								u0send(gsm_rcv[i]);
@@ -1580,8 +1585,12 @@ void Load_parameter()
 	}
 	
 	ll_cnt();
-
-	SendStr0("UART0 Test!\n");
+	/*
+	 * 修改:zlf
+	 * 时间:2017-05-19
+	 * 描述:去掉测试
+	 */
+	SendStr0("UART0 Test!\n");	  
 	for( i=0;i<15;i++ )
 		u0send(JC[i]);
 	for( i=0;i<15;i++ )
@@ -1592,7 +1601,7 @@ void Load_parameter()
 		u0send(WD[i]);
 	for( i=0;i<15;i++ )
 		u0send(XD[i]);
-	SendStr0("OK!\n");
+	SendStr0("OK!\n"); /**/
 
 	//计算定时发送时间
 	k = 10000;
@@ -1696,7 +1705,15 @@ void uart0() interrupt 4
 //串口1中断程序
 void uart1() interrupt 8
 {
-	unsigned char i;
+	unsigned char i,j=0;
+	/*
+	 * 修改:zlf
+	 * 时间:2017-05-19
+	 * 描述:添加数据上报转换数组
+	 */
+	unsigned char xdata *result;
+	unsigned char xdata *temp;
+
 	S2CON &= B1111_1110;
 	uart1_data[uart1_cnt1] = S2BUF;
 	if(uart1_cnt1==199)
@@ -1712,6 +1729,48 @@ void uart1() interrupt 8
 		{
 			if(send_B==1)
 			{
+				/*
+				 * 修改:zlf
+				 * 时间:2017-05-19
+				 * 描述:上报改MQTT协议
+				 */
+				/*for( i=0;i<15;i++ )
+				{	
+					*(temp+j)=JC[i];
+					j++;
+				}
+				for( i=0;i<15;i++ )
+				{
+					*(temp+j)=TDS1[i];
+					j++;
+				}
+				for( i=0;i<15;i++ )
+				{
+					*(temp+j)=TDS2[i];
+					j++;
+				}
+				for( i=0;i<15;i++ )
+				{
+					*(temp+j)=WD[i];
+					j++;
+				}
+				for( i=0;i<15;i++ )
+				{
+					*(temp+j)=XD[i];
+					j++;
+				}
+				for( i=0;i<15;i++ )
+				{
+					*(temp+j)=LL[i];
+					j++;
+				}
+				for( i=0;i<14;i++ )
+				{
+					*(temp+j)=KG[i];
+					j++;
+				}
+				mqtt_publish_message(result,"collect", temp);
+				SendStr1(result); */
 				for( i=0;i<15;i++ )
 					u1send(JC[i]);
 				for( i=0;i<15;i++ )
@@ -1725,7 +1784,7 @@ void uart1() interrupt 8
 				for( i=0;i<15;i++ )
 					u1send(LL[i]);
 				for( i=0;i<14;i++ )
-					u1send(KG[i]);
+					u1send(KG[i]); /**/
 				u1send(0x1A);
 //				send_B = 0;
 //				send_BT= 0;

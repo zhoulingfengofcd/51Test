@@ -1,0 +1,31 @@
+#ifndef __MQTT_H_
+#define __MQTT_H_
+
+int strlen(char *str);
+// **********************************  
+// *                                *  
+// * 根据主机地址和端口号连接服务器 *  
+// *                                *  
+// **********************************  
+//void tcp_connect(char *host,int port);
+// *************************  
+// *                       *  
+// *  构建MQTT连接包       *  
+// *                       *  
+// *************************  
+int mqtt_connect_message(unsigned char *mqtt_message,char *client_id,char *username,char *password);
+// *************************  
+// *                       *  
+// *  发布消息             *  
+// *                       *  
+// *************************  
+int mqtt_publish_message(unsigned char *mqtt_message, char * topic, char * message);
+// *************************  
+// *                       *  
+// *  客户端订阅主题       *  
+// *                       *  
+// ************************* 
+int mqtt_subscribe_message(unsigned char *mqtt_message,unsigned char *topic); 
+
+
+#endif

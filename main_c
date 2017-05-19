@@ -1,0 +1,3566 @@
+//智能净水器主程序
+#include"STC15F2K60S2.h"
+#include"intrins.h"
+#include"string.h"
+#include"CTYPE.H"
+#include"STDIO.H"
+#include"stdlib.h"
+
+//----------------------------------------------------------------
+#ifndef BIN
+#define BIN
+#define B0000_0000 0x00
+#define B0000_0001 0x01
+#define B0000_0010 0x02
+#define B0000_0011 0x03
+#define B0000_0100 0x04
+#define B0000_0101 0x05
+#define B0000_0110 0x06
+#define B0000_0111 0x07
+#define B0000_1000 0x08
+#define B0000_1001 0x09
+#define B0000_1010 0x0A
+#define B0000_1011 0x0B
+#define B0000_1100 0x0C
+#define B0000_1101 0x0D
+#define B0000_1110 0x0E
+#define B0000_1111 0x0F
+#define B0001_0000 0x10
+#define B0001_0001 0x11
+#define B0001_0010 0x12
+#define B0001_0011 0x13
+#define B0001_0100 0x14
+#define B0001_0101 0x15
+#define B0001_0110 0x16
+#define B0001_0111 0x17
+#define B0001_1000 0x18
+#define B0001_1001 0x19
+#define B0001_1010 0x1A
+#define B0001_1011 0x1B
+#define B0001_1100 0x1C
+#define B0001_1101 0x1D
+#define B0001_1110 0x1E
+#define B0001_1111 0x1F
+#define B0010_0000 0x20
+#define B0010_0001 0x21
+#define B0010_0010 0x22
+#define B0010_0011 0x23
+#define B0010_0100 0x24
+#define B0010_0101 0x25
+#define B0010_0110 0x26
+#define B0010_0111 0x27
+#define B0010_1000 0x28
+#define B0010_1001 0x29
+#define B0010_1010 0x2A
+#define B0010_1011 0x2B
+#define B0010_1100 0x2C
+#define B0010_1101 0x2D
+#define B0010_1110 0x2E
+#define B0010_1111 0x2F
+#define B0011_0000 0x30
+#define B0011_0001 0x31
+#define B0011_0010 0x32
+#define B0011_0011 0x33
+#define B0011_0100 0x34
+#define B0011_0101 0x35
+#define B0011_0110 0x36
+#define B0011_0111 0x37
+#define B0011_1000 0x38
+#define B0011_1001 0x39
+#define B0011_1010 0x3A
+#define B0011_1011 0x3B
+#define B0011_1100 0x3C
+#define B0011_1101 0x3D
+#define B0011_1110 0x3E
+#define B0011_1111 0x3F
+#define B0100_0000 0x40
+#define B0100_0001 0x41
+#define B0100_0010 0x42
+#define B0100_0011 0x43
+#define B0100_0100 0x44
+#define B0100_0101 0x45
+#define B0100_0110 0x46
+#define B0100_0111 0x47
+#define B0100_1000 0x48
+#define B0100_1001 0x49
+#define B0100_1010 0x4A
+#define B0100_1011 0x4B
+#define B0100_1100 0x4C
+#define B0100_1101 0x4D
+#define B0100_1110 0x4E
+#define B0100_1111 0x4F
+#define B0101_0000 0x50
+#define B0101_0001 0x51
+#define B0101_0010 0x52
+#define B0101_0011 0x53
+#define B0101_0100 0x54
+#define B0101_0101 0x55
+#define B0101_0110 0x56
+#define B0101_0111 0x57
+#define B0101_1000 0x58
+#define B0101_1001 0x59
+#define B0101_1010 0x5A
+#define B0101_1011 0x5B
+#define B0101_1100 0x5C
+#define B0101_1101 0x5D
+#define B0101_1110 0x5E
+#define B0101_1111 0x5F
+#define B0110_0000 0x60
+#define B0110_0001 0x61
+#define B0110_0010 0x62
+#define B0110_0011 0x63
+#define B0110_0100 0x64
+#define B0110_0101 0x65
+#define B0110_0110 0x66
+#define B0110_0111 0x67
+#define B0110_1000 0x68
+#define B0110_1001 0x69
+#define B0110_1010 0x6A
+#define B0110_1011 0x6B
+#define B0110_1100 0x6C
+#define B0110_1101 0x6D
+#define B0110_1110 0x6E
+#define B0110_1111 0x6F
+#define B0111_0000 0x70
+#define B0111_0001 0x71
+#define B0111_0010 0x72
+#define B0111_0011 0x73
+#define B0111_0100 0x74
+#define B0111_0101 0x75
+#define B0111_0110 0x76
+#define B0111_0111 0x77
+#define B0111_1000 0x78
+#define B0111_1001 0x79
+#define B0111_1010 0x7A
+#define B0111_1011 0x7B
+#define B0111_1100 0x7C
+#define B0111_1101 0x7D
+#define B0111_1110 0x7E
+#define B0111_1111 0x7F
+#define B1000_0000 0x80
+#define B1000_0001 0x81
+#define B1000_0010 0x82
+#define B1000_0011 0x83
+#define B1000_0100 0x84
+#define B1000_0101 0x85
+#define B1000_0110 0x86
+#define B1000_0111 0x87
+#define B1000_1000 0x88
+#define B1000_1001 0x89
+#define B1000_1010 0x8A
+#define B1000_1011 0x8B
+#define B1000_1100 0x8C
+#define B1000_1101 0x8D
+#define B1000_1110 0x8E
+#define B1000_1111 0x8F
+#define B1001_0000 0x90
+#define B1001_0001 0x91
+#define B1001_0010 0x92
+#define B1001_0011 0x93
+#define B1001_0100 0x94
+#define B1001_0101 0x95
+#define B1001_0110 0x96
+#define B1001_0111 0x97
+#define B1001_1000 0x98
+#define B1001_1001 0x99
+#define B1001_1010 0x9A
+#define B1001_1011 0x9B
+#define B1001_1100 0x9C
+#define B1001_1101 0x9D
+#define B1001_1110 0x9E
+#define B1001_1111 0x9F
+#define B1010_0000 0xA0
+#define B1010_0001 0xA1
+#define B1010_0010 0xA2
+#define B1010_0011 0xA3
+#define B1010_0100 0xA4
+#define B1010_0101 0xA5
+#define B1010_0110 0xA6
+#define B1010_0111 0xA7
+#define B1010_1000 0xA8
+#define B1010_1001 0xA9
+#define B1010_1010 0xAA
+#define B1010_1011 0xAB
+#define B1010_1100 0xAC
+#define B1010_1101 0xAD
+#define B1010_1110 0xAE
+#define B1010_1111 0xAF
+#define B1011_0000 0xB0
+#define B1011_0001 0xB1
+#define B1011_0010 0xB2
+#define B1011_0011 0xB3
+#define B1011_0100 0xB4
+#define B1011_0101 0xB5
+#define B1011_0110 0xB6
+#define B1011_0111 0xB7
+#define B1011_1000 0xB8
+#define B1011_1001 0xB9
+#define B1011_1010 0xBA
+#define B1011_1011 0xBB
+#define B1011_1100 0xBC
+#define B1011_1101 0xBD
+#define B1011_1110 0xBE
+#define B1011_1111 0xBF
+#define B1100_0000 0xC0
+#define B1100_0001 0xC1
+#define B1100_0010 0xC2
+#define B1100_0011 0xC3
+#define B1100_0100 0xC4
+#define B1100_0101 0xC5
+#define B1100_0110 0xC6
+#define B1100_0111 0xC7
+#define B1100_1000 0xC8
+#define B1100_1001 0xC9
+#define B1100_1010 0xCA
+#define B1100_1011 0xCB
+#define B1100_1100 0xCC
+#define B1100_1101 0xCD
+#define B1100_1110 0xCE
+#define B1100_1111 0xCF
+#define B1101_0000 0xD0
+#define B1101_0001 0xD1
+#define B1101_0010 0xD2
+#define B1101_0011 0xD3
+#define B1101_0100 0xD4
+#define B1101_0101 0xD5
+#define B1101_0110 0xD6
+#define B1101_0111 0xD7
+#define B1101_1000 0xD8
+#define B1101_1001 0xD9
+#define B1101_1010 0xDA
+#define B1101_1011 0xDB
+#define B1101_1100 0xDC
+#define B1101_1101 0xDD
+#define B1101_1110 0xDE
+#define B1101_1111 0xDF
+#define B1110_0000 0xE0
+#define B1110_0001 0xE1
+#define B1110_0010 0xE2
+#define B1110_0011 0xE3
+#define B1110_0100 0xE4
+#define B1110_0101 0xE5
+#define B1110_0110 0xE6
+#define B1110_0111 0xE7
+#define B1110_1000 0xE8
+#define B1110_1001 0xE9
+#define B1110_1010 0xEA
+#define B1110_1011 0xEB
+#define B1110_1100 0xEC
+#define B1110_1101 0xED
+#define B1110_1110 0xEE
+#define B1110_1111 0xEF
+#define B1111_0000 0xF0
+#define B1111_0001 0xF1
+#define B1111_0010 0xF2
+#define B1111_0011 0xF3
+#define B1111_0100 0xF4
+#define B1111_0101 0xF5
+#define B1111_0110 0xF6
+#define B1111_0111 0xF7
+#define B1111_1000 0xF8
+#define B1111_1001 0xF9
+#define B1111_1010 0xFA
+#define B1111_1011 0xFB
+#define B1111_1100 0xFC
+#define B1111_1101 0xFD
+#define B1111_1110 0xFE
+#define B1111_1111 0xFF
+#endif
+
+//----------------------------------------------------------------
+#define ON  1
+#define OFF 0
+
+//采用12分频，时钟11.0592M
+#define	TUS200H	0xFF			//0xFF47/65351(184)/10毫秒计数
+#define	TUS200L	0x47
+#define	TMS10H	0xDB			//0xDBFF/56319(9216)/10毫秒计数
+#define	TMS10L	0xFF
+#define TMS20H	0xB7			//0xB7FF/47103(18432)/20毫秒计数
+#define TMS20L	0xFF
+#define	TMS40H	0x96F			//0x6FFF/28671(36864)/40毫秒计数
+#define	TMS40L	0xFF
+#define TMS50H	0x4B			//0x4BFF/19455(46080)/50毫秒计数
+#define	TMS50L	0xFF
+
+#define FOSC	11059200		//系统时钟设定11.0592MHz
+#define	BAUD1	9600			//波特率为9600
+#define	BAUD2	19200
+#define	BAUD3	38400
+#define	BAUD4	57600
+#define	BAUD5	115200
+
+//EEPROM
+#define	CMD_IDLE	0			//空闲模式
+#define	CMD_READ	1			//IAP字节读取命令
+#define	CMD_PROGRAM	2			//IAP字节编程命令
+#define	CMD_ERASE	3			//IAP扇区擦除命令
+
+#define IAP0	0x0000			//IAP扇区1起始地址
+#define IAP1	0x0200			//IAP扇区2起始地址
+
+//#define	ENABLE_IAP	0x80		//if SYSCLK<30MHz
+//#define	ENABLE_IAP	0x81		//if SYSCLK<24MHz
+//#define	ENABLE_IAP	0x82		//if SYSCLK<20MHz
+#define	ENABLE_IAP	0x83		//if SYSCLK<12MHz
+//#define	ENABLE_IAP	0x84		//if SYSCLK<6MHz
+//#define	ENABLE_IAP	0x85		//if SYSCLK<3MHz
+//#define	ENABLE_IAP	0x86		//if SYSCLK<2MHz
+//#define	ENABLE_IAP	0x87		//if SYSCLK<1MHz
+
+#define	ADC_POWER	0x80
+#define	ADC_FLAG	0x10
+#define	ADC_START	0x08
+#define	ADC_SPEEDL	0x20
+#define	ADC_SPEEDH	0x40
+#define	ADC_SPEEDHH	0x60
+
+#define	ADC_TEMP	0x02			//温度通道
+#define	ADC_HRH		0x04			//湿度高
+#define	ADC_HR		0x05			//湿度通道
+#define	ADC_HRL		0x06			//湿度低
+
+/*
+JC设备编号存储地址  	0000~000F
+定时发送频率参数地址	0010~001F
+流量参数存储地址		0200~020F
+*/
+#define	JC_Addr	0x0000
+#define	TD_Addr	0x0010
+#define	LL_Addr	0x0200
+
+
+
+//全局变量
+unsigned int	xdata ds_data1,ds_data2,ds_data3,ds_data4,ds_data6;	//定时器全局变量
+unsigned char	xdata ds_data5,ds_data7,cmd_cnt;								//H202脉冲计数器
+unsigned int	xdata td_data;								//定时发送数据时间寄存器
+unsigned char 	xdata uart0_data[200];
+unsigned char	xdata uart1_data[200];
+unsigned char	xdata gsm_rcv[200];
+unsigned char	xdata gsm_cnt;
+unsigned char	xdata gsm_rcv_clrcnt;
+unsigned char	xdata csq_data;								//信号强度寄存器，只有当模块信号强度达到通信预定值时，才开始建立通讯
+unsigned char	xdata csq_reg;								//信号强度设定寄存器
+unsigned char	xdata uart0_cnt1; 
+unsigned char	xdata uart0_cnt2; 
+unsigned char	xdata uart1_cnt1; 
+unsigned char	xdata uart1_cnt2;
+unsigned char	xdata send_B;								//定时上传标志
+unsigned char	xdata send_BT;								//通讯保持
+unsigned char	xdata send_CB;								//重新建立连接标识
+unsigned char	xdata send_RB;								//GPS模块复位标识
+unsigned char	xdata uart0_B;
+unsigned char	xdata uart1_B;
+unsigned char	xdata tds_in_B;								//进水TDS值检测标志
+unsigned char	xdata tds_out_B;							//出水TDS值检测标志
+unsigned int	xdata tds_in_data;							//进水TDS值检测寄存器
+unsigned int	xdata tds_out_data;							//出水TDS值检测寄存器
+unsigned int	xdata tds_data;
+unsigned int	xdata tds_data1;
+unsigned int	xdata tds_data2;
+unsigned long	xdata temp_data;								
+unsigned long	xdata hr_res;								//湿度传感器电阻值
+unsigned char	xdata LL_D[7];
+unsigned int	xdata LL_data;
+unsigned long	xdata LL_data1;
+unsigned long	xdata LL_data2;
+
+
+
+
+//funcl (TDS1);
+unsigned char xdata JC[15] 	= "JC000000000077\n";
+unsigned char xdata TDS1[15]= "TD1000333.0000\n";
+unsigned char xdata TDS2[15]= "TD2000444.0000\n";
+unsigned char xdata WD[15] 	= "WD0000011.0000\n";
+unsigned char xdata XD[15] 	= "XD0000081.0000\n";
+unsigned char xdata LL[15] 	= "LL0007891.0000\n";
+unsigned char xdata KG[15] 	= "K11K21L0G00010\n";
+unsigned char xdata PD[15];
+
+
+unsigned char xdata LED_BUF[5] = {5,3,2,1,7};
+unsigned char xdata LED_Char[];
+unsigned char xdata ASCLL_Char[];
+
+
+//output
+sbit	RELAY_JS	=P0^6;		//进水电池阀控制
+sbit	RELAY_ZY	=P0^5;		//隔膜增压泵控制
+sbit	BELL		=P0^4;		//蜂鸣器
+sbit	hr_ctr1		=P0^1;		//H202驱动高
+sbit	hr_ctr2		=P0^0;		//H202驱动低
+sbit	G_RST		=P4^7;		//GPRS模块复位
+sbit	SYS_LED		=P4^3;		//系统运行指示LED
+sbit	LED_SCK		=P4^4;		//595数据时钟
+sbit	LED_RCK		=P2^0;		//595触发时钟
+sbit	LED_OE		=P2^1;		//595输出使能
+sbit	LED_DATA	=P2^2;		//595数据
+
+//input
+sbit	KEY3		=P4^6;		//
+sbit	KEY2		=P4^5;		//
+sbit	KEY1		=P2^7;
+sbit	LSBH		=P0^7;		//漏水保护
+sbit	TDS_OUT		=P0^3;		//输出TDS检测
+sbit	TDS_IN		=P0^2;		//输入TDS检测
+sbit	Vref_AD		=P1^2;		//AD转换参考输入
+sbit	TMP_AD		=P1^3;		//温度检测输入
+sbit	HR_test		=P1^4;		//湿度传感器控制1端AD输入
+sbit	HR_ref		=P1^5;		//湿度传感器AD输入
+sbit	HR_h202		=P1^6;		//湿度传感器控制2薃D输入
+sbit	FLOW		=P1^7;		//流量计信号输入
+
+
+
+//函数声明
+void init();								//MCU初始化
+void cr_gsm_rcv();							//
+void led_disp();							//LED显示程序
+void delay(unsigned int a);					//延时程序
+void u0send(unsigned char a);				//UART0发送字节程序
+void u1send(unsigned char a);				//UART1发送字节程序
+void SendStr0(unsigned char *s);			//UART0发送字符串
+void SendStr1(unsigned char *s);			//UART1发送字符串
+void u0_disp();								//状态回显
+
+void IapIdle();												//IAP关闭
+void IapEraseSector(unsigned int addr);						//IAP擦除
+void IapProgramByte(unsigned int addr,unsigned char dat);	//IAP写字节
+unsigned char IapReadByte(unsigned int addr);				//IAP读字节
+
+void TDS_IN_CHEAK();						//进水TDS值检测
+void TDS_OUT_CHEAK();						//出水TDS值检测
+void TDS_COMP();							//TDS值计算
+void Load_parameter();						//加载参数
+
+void LS_CHEAK();							//漏水检测
+void TEMP_CHEAK();							//温度检测
+void HR_CHEAK();							//湿度检测
+void ll_cnt();								//流量计算
+
+void AT();									//建立通讯连接
+void CSQ();									//查询信号强度
+void CPIN();								//查询是否需要输入PIN码，如果返回"READY"则不需要输入密码
+void CGATT();								//AT+CGATT  查询、设置附着和分离GPRS业务
+void CREG();								//查询网络注册信息
+void CSTT();								//启动任务并设置接入点APN、用户名、密码
+void CIICR();								//AT+CIICR 激活移动场景，发起 GPRS 或 CSD 无线通讯
+void CIFSR();								//获取本机IP
+void CIPSTART();							//建立TCP连接
+void CLPORT();								//设置本机端口号
+void CLPORT1();								//获取本机端口号
+void CIPSEND();								//发送数据
+
+//主程序
+void main()
+{
+	
+	unsigned char xdata i;
+
+	delay(5000);
+	init();
+	Load_parameter();
+	delay(5000);
+//	IAP_CONTR = 0x20;
+//	led_disp();
+
+//	LS_CHEAK();
+//	TEMP_CHEAK();
+//	HR_CHEAK();
+
+//	while(uart1_B==0) G_RST = 1;
+
+/*	while(uart1_B==0)
+	{	
+	ds_data4 = 0;
+	while(ds_data4!=2);	
+	LS_CHEAK();
+	TEMP_CHEAK();
+	HR_CHEAK();
+
+	SendStr0("UART0 Test!\n");
+	for( i=0;i<15;i++ )
+		u0send(JC[i]);
+	for( i=0;i<15;i++ )
+		u0send(KG[i]);
+	for( i=0;i<15;i++ )
+		u0send(LL[i]);
+	for( i=0;i<15;i++ )
+		u0send(WD[i]);
+	for( i=0;i<15;i++ )
+		u0send(XD[i]);
+	SendStr0("OK!\n");
+}*/
+
+
+//	ds_data4 = 0;								//初始化后延时5S
+//	while(ds_data4!=5);
+
+
+//---------------------------------------------------------------------------------------------
+//同SGM900A建立通讯连接
+	AT();
+
+//---------------------------------------------------------------------------------------------	
+//查询是否需要输入PIN码，如果返回"READY"则不需要输入密码
+	CPIN();
+
+//---------------------------------------------------------------------------------------------
+//查询信号强度，只有当型号强度达到10以上才建立通讯连接
+	CSQ();
+	
+//---------------------------------------------------------------------------------------------
+//查询网络注册信息
+	CREG();
+
+//---------------------------------------------------------------------------------------------
+//AT+CGATT  查询、设置附着和分离GPRS业务
+	CGATT();
+
+//---------------------------------------------------------------------------------------------
+//启动任务并设置接入点APN、用户名、密码
+	CSTT();
+//---------------------------------------------------------------------------------------------
+//AT+CIICR 激活移动场景，发起 GPRS 或 CSD 无线通讯
+	CIICR();
+
+//---------------------------------------------------------------------------------------------
+//获取本机IP
+	CIFSR();
+
+//---------------------------------------------------------------------------------------------
+//建立TCP连接			
+	CIPSTART();
+
+//---------------------------------------------------------------------------------------------
+//设置本机端口号
+	CLPORT();
+
+//---------------------------------------------------------------------------------------------
+//获取本机端口号
+	CLPORT1();
+		
+			
+	while(1)
+	{												//输入发送数据指令，等待模块响应	
+		if((send_B==1)||(send_BT==1))
+			{
+//				ds_data4 = 0;
+				if(send_B==1)
+					{
+						TDS_IN_CHEAK();						//进水TDS值检测
+						TDS_OUT_CHEAK();					//出水TDS值检测
+						TEMP_CHEAK();						//温度检测
+						HR_CHEAK();							//湿度检测
+//						ds_data7 = 0;
+					}
+				CIPSEND();				
+			}
+
+/*		if(ds_data7==3)
+					{
+						send_B = 0;
+						send_BT= 0;
+
+						G_RST = 0;
+						ds_data4 = 0;
+						while(ds_data4!=2);
+						G_RST = 1;
+						ds_data4 = 0;
+						while(ds_data4!=2);
+						Load_parameter();
+						//查询是否需要输入PIN码，如果返回"READY"则不需要输入密码
+						CPIN();
+
+						//查询信号强度，只有当型号强度达到10以上才建立通讯连接
+						CSQ();
+	
+						//AT+CGATT  查询、设置附着和分离GPRS业务
+						CGATT();
+	
+						//查询网络注册信息
+						CREG();
+
+						//启动任务并设置接入点APN、用户名、密码
+						CSTT();
+
+						//AT+CIICR 激活移动场景，发起 GPRS 或 CSD 无线通讯
+						CIICR();
+
+						//获取本机IP
+						CIFSR();
+
+						//建立TCP连接			
+						CIPSTART();
+					}*/
+		//漏水检测
+		LS_CHEAK();
+		BELL = ~BELL;
+
+		//SendStr1( "AT+CIFSR\r\n" );			//读取本机IP
+		//ds_data4 = 0;
+		//while(ds_data4!=1);
+	}
+}
+
+//----------------------------------------------------------------
+//初始化配置程序
+void init()
+{
+	ds_data1 = 0;
+	ds_data2 = 0;
+	ds_data3 = 0;
+	ds_data4 = 0;
+	ds_data5 = 0;
+	ds_data7 = 10;
+	uart0_cnt1 = 0;
+	uart0_cnt2 = 0;
+	uart1_cnt1 = 0;
+	uart1_cnt2 = 0;
+	gsm_cnt = 0;
+	gsm_rcv_clrcnt = 0;
+	csq_reg = 1;					//设定信号强度门槛值为16
+	send_B = 0;
+	send_BT= 0;
+	send_CB = 0;
+	send_RB = 0;
+	uart0_B = 0;
+	uart1_B = 0;
+	tds_in_B = 0;
+	tds_out_B = 0; 
+	tds_in_data = 0;
+	tds_out_data = 0;
+	LL_data = 0;
+	LL_data1= 0;
+	LL_data2= 0;
+
+	G_RST = 0;
+	//端口配置
+	P0M0 = B0111_0011;
+	P0M1 = B1000_1100;
+	P1M0 = B0000_0000;
+	P1M1 = B1111_1100;
+	P2M0 = B0000_0000;
+	P2M1 = B1000_0000;
+	P3M0 = B0000_0000;
+	P3M1 = B0000_0000;
+	P4M0 = B1000_0000;
+	P4M1 = B0110_0000;
+
+	//AD口设置
+	CLK_DIV |= B0010_0000;		//设置AD转换结果存放，ADC_RESL存放低8位，ADC_RES存放高2位
+	P1ASF = B0000_1100;
+	ADC_RES = 0;
+	ADC_RESL = 0;
+	ADC_CONTR = ADC_POWER|ADC_SPEEDHH;		//打开ADC电源，设置转换时间为90时钟周期
+	
+	//设置T0计数值
+	TH0 = 0;
+	TL0 = 0;
+	//设置T1计数值
+	TH1 = TUS200H;
+	TL1 = TUS200L;
+	//设置T2计数值（波特率）
+	T2L = (65536-(FOSC/12/4/BAUD5));			//波特率设置BAUD1:9600,BAUD2:19200,BAUD3:38400,BAUD4:57600,BAUD5:115200
+	T2H = (65536-(FOSC/12/4/BAUD5))>>8;
+
+	TMOD = B0000_0000;		//T0,T1设置为定时/计数0模式，自动装载数据
+	AUXR = B1001_0000;		//打开T2,T1设置为12分频，T0不分频
+	AUXR |=B0000_0001;		//设置T2为UART0\UART1波特率发生器
+	TR1 = ON;				//打开T1
+
+	//UART0设置
+	SM0 = 0;				//设置UART0为工作模式1，8位可变波特率模式
+	SM1 = 1;
+	REN = 1;				//允许UART0接收数据
+
+	//UART1设置
+	S2CON |= B0001_0000;	//设置UART1为工作模式0，8位可变波特率模式（UART1只有2中工作模式）,允许UART1接收数据
+
+	//外部中断0设置
+	IT0 = ON;				//下降沿触发中断
+	EX0 = ON;				//打开外部中断
+
+	ET0 = ON;				//打开T0中断
+	ET1 = ON;				//打开T1中断
+	ES  = ON;				//打开UART0中断
+	IE2 |= B0000_0001; 		//打开UART1中断
+	IP2 |= B0000_0001;		//设置UART1优先中断
+	EA 	= ON;				//开总中断
+	RELAY_JS = OFF;
+	RELAY_ZY = ON;
+	BELL	 = OFF;
+
+	LED_OE	 = 0;
+	LED_RCK	 = 0;
+	LED_SCK	 = 0;
+	LED_DATA = 1;
+	
+	
+	G_RST = 0;
+	ds_data4 = 0;
+	while(ds_data4!=1);
+	G_RST = 1;
+	ds_data4 = 0;
+	while(ds_data4!=2);
+	G_RST = 0;
+	ds_data4 = 0;
+	while(ds_data4!=15);
+
+}
+
+//----------------------------------------------------------------
+//同SIM900A模块建立连接
+void AT()
+{	
+	while(uart1_B==0)
+		{
+			SendStr1( "AT\r" );					//向SIM900A发送"AT"指令，同步串口波特率
+			SendStr0( "U0 AT\r\n" );
+			ds_data4 = 0;
+//			while(ds_data4!=1);						//延时等待1S
+//			ds_data4 = 0;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+			
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{
+						if(uart1_data[gsm_cnt]=='O')
+						{
+							for(;uart1_data[gsm_cnt]!=0x0d;)
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+
+									if(gsm_cnt==199)
+										gsm_cnt = 0;
+									else
+										gsm_cnt++;
+								}
+							if(uart1_data[(gsm_cnt-1)]!=0x0d)
+								{
+									if(gsm_cnt==199)
+										gsm_cnt = 0;
+									else
+										gsm_cnt++;
+									if(strstr(gsm_rcv,"OK"))
+										uart1_B = 1;
+									else if(strstr(gsm_rcv,"POWER DOWN"))
+										{
+										IAP_CONTR = 0x20;
+										}
+ 									for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+										gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+								}
+							
+						}
+						else
+						{
+							if(gsm_cnt==199)
+								gsm_cnt = 0;
+							else
+								gsm_cnt++;
+						}
+				}
+			gsm_cnt--;
+			u0_disp();
+		}
+	uart1_B = 0;								//清零标志位
+	
+	ds_data4 = 0;								//建立握手信号后延时
+	while(ds_data4!=3);
+
+	LED_BUF[4] = 6;
+//	led_disp();
+}
+
+//----------------------------------------------------------------
+//查询信号强度，只有当型号强度达到10以上才建立通讯连接
+void CSQ()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)				
+		{	
+			SendStr1( "AT+CSQ\r\n" );			//查询信号强度
+			SendStr0( "U0 CSQ\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=2);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{
+						if(uart1_data[gsm_cnt]==0x0d)
+							{
+//								BELL = 1;
+								if(gsm_cnt==199)
+									gsm_cnt = 0;
+								else
+									gsm_cnt++;
+
+								if(uart1_data[gsm_cnt]==0x0a)
+									{
+										if(gsm_rcv_clrcnt==10)
+											{			csq_data = 0;
+														switch(gsm_rcv[6])
+														{
+															case '0':	csq_data = 0;	break;
+															case '1':	csq_data = 10;	break;
+															case '2':	csq_data = 20;	break;
+															default: break;
+														}
+														
+														switch(gsm_rcv[7])
+														{
+															case '0':	csq_data = csq_data+0;	break;
+															case '1':	csq_data = csq_data+1;	break;
+															case '2':	csq_data = csq_data+2;	break;
+															case '3':	csq_data = csq_data+3;	break;
+															case '4':	csq_data = csq_data+4;	break;
+															case '5':	csq_data = csq_data+5;	break;
+															case '6':	csq_data = csq_data+6;	break;
+															case '7':	csq_data = csq_data+7;	break;
+															case '8':	csq_data = csq_data+8;	break;
+															case '9':	csq_data = csq_data+9;	break;
+															default: break;
+														}
+											}
+										else if(gsm_rcv_clrcnt==2)
+											{
+												if(strstr(gsm_rcv, "OK"))
+													{
+														if(csq_data>csq_reg)
+															uart1_B = 1;			//置位标志位
+//														BELL = 1;	
+													}
+											}
+//											uart1_B = 1;
+									}
+								for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+									gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+
+								if(gsm_cnt==199)
+									gsm_cnt = 0;
+								else
+									gsm_cnt++;
+								
+							}
+						else
+							{
+								gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+								gsm_rcv_clrcnt++;
+								if(gsm_cnt==199)
+									gsm_cnt = 0;
+								else
+									gsm_cnt++;
+							}
+				}
+
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;								//清零标志位
+}
+
+
+
+//----------------------------------------------------------------
+//查询是否需要输入PIN码，如果返回"READY"则不需要输入密码
+void CPIN()
+{
+	SendStr1( "AT+CPIN?\r\n" );
+	SendStr0( "U0 CPIN\r\n" );
+	ds_data4 = 0;								//建立握手信号后延时
+	while(ds_data4!=3);
+	u0_disp();							//*/
+			
+	LED_BUF[4] = 5;
+	led_disp();
+}
+
+//----------------------------------------------------------------
+//AT+CGATT  查询、设置附着和分离GPRS业务
+void CGATT()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			SendStr1( "AT+CGATT?\r\n" );			//
+			SendStr0( "U0 CGATT\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=1);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>5)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{
+					if(uart1_data[gsm_cnt]==':')
+						{
+							if(uart1_data[gsm_cnt+2]=='1')
+								{
+									//BELL= 1;
+									uart1_B = 1;
+								}
+/*							else
+								{
+									SendStr1( "AT+CGATT=1\r\n" );			//查询信号强度
+									ds_data4 = 0;						//发送命令后延时
+									while(ds_data4!=1);
+									u0_disp();
+								}*/
+						}
+						
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;					
+				}
+
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//查询网络注册信息
+void CREG()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CREG?\r\n" );			//
+			SendStr0( "U0 CREG\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=1);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>10)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{
+					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+//							for(i=0;i!=gsm_rcv_clrcnt;i++)
+//								u0send(gsm_rcv[i]);
+
+							if(strstr(gsm_rcv,",1"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+							else if(strstr(gsm_rcv,",5"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+						    else if(strstr(gsm_rcv,"ERROR"))
+								{
+										IAP_CONTR = 0x20;
+								}
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;
+				}
+
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//启动任务并设置接入点APN、用户名、密码
+void CSTT()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CSTT=\"CMNET\"\r\n" );			//
+			SendStr0( "U0 CSTT\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=1);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{
+					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+//							for(i=0;i!=gsm_rcv_clrcnt;i++)
+//								u0send(gsm_rcv[i]);
+
+							if(strstr(gsm_rcv,"OK"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+							else if(strstr(gsm_rcv,"ERROR"))
+								{
+										IAP_CONTR = 0x20;
+								}
+
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;
+				}
+
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//AT+CIICR 激活移动场景，发起 GPRS 或 CSD 无线通讯
+void CIICR()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CIICR\r\n" );			//
+			SendStr0( "U0 CIICR\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=3);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{
+					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+									//u0send('k');
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+//							for(i=0;i!=gsm_rcv_clrcnt;i++)
+//								u0send(gsm_rcv[i]);
+
+							if(strstr(gsm_rcv,"OK"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+							else if(strstr(gsm_rcv,"ERROR"))
+								{
+										IAP_CONTR = 0x20;
+								}
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;
+				}
+
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//获取本机IP
+void CIFSR()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CIFSR\r\n" );			//
+			SendStr0( "U0 CIFSR\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=1);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{	
+/*					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+									//u0send('k');
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+//							for(i=0;i!=gsm_rcv_clrcnt;i++)
+//								u0send(gsm_rcv[i]);
+
+							if(strstr(gsm_rcv,"OK"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}*/
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;
+				}
+			uart1_B = 1;
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//建立TCP连接	
+void CIPSTART()
+{		
+	unsigned char i;
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CIPSTART=\"TCP\",\"120.77.39.67\",\"10002\"\r\n" );			//
+			SendStr0( "U0 CIPSTART\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=5);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<4);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{
+					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+									//u0send('k');
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+							for(i=0;i!=gsm_rcv_clrcnt;i++)
+								u0send(gsm_rcv[i]);
+
+							if(strstr(gsm_rcv,"CONNECT OK"))
+								{
+								uart1_B = 1;
+								}
+							else if(strstr(gsm_rcv,"ERROR"))
+								{
+								IAP_CONTR = 0x20;
+								}
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;
+				}
+
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//设置本机端口号
+void CLPORT()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CLPORT=\"TCP\",39888\r\n" );			//
+			SendStr0( "U0 CLPORT Z\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=1);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{	
+					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+									//u0send('k');
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+							if(strstr(gsm_rcv,"OK"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+							else if(strstr(gsm_rcv,"ERROR"))
+								{
+										IAP_CONTR = 0x20;
+								}
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;
+				}
+			uart1_B = 1;
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//获取本机端口号
+void CLPORT1()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CLPORT?\r\n" );			//
+			SendStr0( "U0 CLPORT\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=1);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<3);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{	
+					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+									//u0send('k');
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+//							for(i=0;i!=gsm_rcv_clrcnt;i++)
+//								u0send(gsm_rcv[i]);
+
+							if(strstr(gsm_rcv,"OK"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+							else if(strstr(gsm_rcv,"ERROR"))
+								{
+										IAP_CONTR = 0x20;
+								}
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;
+				}
+			uart1_B = 1;
+			gsm_cnt--;
+		}
+	u0_disp();
+	uart1_B = 0;					//清零标志位*/
+}
+
+//----------------------------------------------------------------
+//发送数据
+void CIPSEND()
+{
+	cmd_cnt = 0;
+	while(uart1_B==0)
+		{
+			if(send_CB==1)
+				{
+					//建立TCP连接			
+					CIPSTART();
+					send_CB = 0;
+				}
+			gsm_rcv_clrcnt = 0;
+			SendStr1( "AT+CIPSEND\r\n" );			//
+			SendStr0( "U0 CIPSEND\r\n" );
+			ds_data4 = 0;						//发送命令后延时
+//			while(ds_data4!=3);
+//			ds_data4 = 0;
+
+			cmd_cnt++;
+			if(cmd_cnt>1)
+				IAP_CONTR = 0x20;
+
+			u0_disp();
+//			while((uart1_cnt1==gsm_cnt)||(ds_data4>3));			//判断串口有无收到AT命令返回的查询信息
+
+//			if(uart1_cnt1==gsm_cnt)
+//				IAP_CONTR = 0x20;
+
+			while(ds_data4<4);			//等待同步完成，并收到返回数据
+
+			if(uart1_cnt1==gsm_cnt)
+				IAP_CONTR = 0x20;
+
+			send_B = 0;
+			send_BT= 0;
+
+			for(;uart1_cnt1!=(gsm_cnt-1);)
+				{	
+					if((uart1_data[gsm_cnt]!=0x0d))
+						{
+							if((uart1_data[gsm_cnt]!=0x0a))
+								{
+									gsm_rcv[gsm_rcv_clrcnt] = uart1_data[gsm_cnt];
+									gsm_rcv_clrcnt++;
+									//u0send('k');
+								}
+						}
+				   	if(uart1_data[gsm_cnt]==0x0d)
+						{
+//							for(i=0;i!=gsm_rcv_clrcnt;i++)
+//								u0send(gsm_rcv[i]);
+
+							if(strstr(gsm_rcv,"SEND OK"))
+								{
+								uart1_B = 1;
+								//BELL = 1;
+								}
+							else if(strstr(gsm_rcv,"CLOSED"))
+								send_CB = 1;
+							else if(strstr(gsm_rcv,"ERROR"))
+								{
+								IAP_CONTR = 0x20;
+								}
+ 							for(;gsm_rcv_clrcnt!=0;gsm_rcv_clrcnt--)
+								gsm_rcv[(gsm_rcv_clrcnt-1)]='\0';
+						}
+					if(gsm_cnt==199)
+						gsm_cnt = 0;
+					else
+						gsm_cnt++;   
+				}
+//			uart1_B = 1;
+			gsm_cnt--;
+		}
+	uart1_B = 0;					//清零标志位*/
+	u0_disp();
+}
+
+//----------------------------------------------------------------
+//延时程序
+void delay(unsigned int a)
+{
+	unsigned char xdata i;
+	while(a==0)
+	{
+		a--;
+		for(i=0;i<200;i++);
+	}
+}
+
+//----------------------------------------------------------------
+//加载参数
+void Load_parameter()
+{
+	unsigned char i;
+	unsigned int  k;
+
+	i=IapReadByte(JC_Addr);
+	if(i==0xFF)
+		{
+			for(i=0;i<14;i++)					//初始设备编号
+			{
+				IapProgramByte(JC_Addr+i,JC[i]);
+			}
+			
+			for(i=9;i<14;i++)					//初始数据发送频率
+			{
+				IapProgramByte(TD_Addr+i,KG[i]);
+			}
+		}
+
+
+	for(i=0;i<14;i++)							//读取设备编号
+	{
+		JC[i]=IapReadByte(JC_Addr+i);
+	}
+
+	for(i=9;i<14;i++)							//读取数据发送频率
+	{
+		KG[i]=IapReadByte(TD_Addr+i);
+	}
+
+/*	i=IapReadByte(LL_Addr);						//读取流量值
+	if(i==0xFF)
+		{
+			for(i=2;i<14;i++)					//初始流量值
+			{
+				if(i==9)
+					IapProgramByte(LL_Addr+i,'.');
+				else
+					IapProgramByte(LL_Addr+i,'0');
+			}
+		}*/
+
+	for(i=0;i<7;i++)							//读取流量值
+	{
+		if(IapReadByte(LL_Addr+i)>9)
+			LL_D[i]=0;
+		else
+			LL_D[i]=IapReadByte(LL_Addr+i);
+	}
+	
+	ll_cnt();
+
+	SendStr0("UART0 Test!\n");
+	for( i=0;i<15;i++ )
+		u0send(JC[i]);
+	for( i=0;i<15;i++ )
+		u0send(KG[i]);
+	for( i=0;i<15;i++ )
+		u0send(LL[i]);
+	for( i=0;i<15;i++ )
+		u0send(WD[i]);
+	for( i=0;i<15;i++ )
+		u0send(XD[i]);
+	SendStr0("OK!\n");
+
+	//计算定时发送时间
+	k = 10000;
+	td_data = 0;
+	for(i=9;i<14;i++)
+	{
+		td_data = td_data + ((KG[i]-48)*k);
+		k = k/10;
+	}
+
+
+}
+
+
+//----------------------------------------------------------------
+//串口0中断程序
+void uart0() interrupt 4
+{
+	unsigned char xdata i;
+	RI = OFF;
+//	*uart0_sp = SBUF;
+//	uart0_sp++;
+	if(SBUF=='\n')
+		uart0_B = 1;
+	if(SBUF=='1')
+		SendStr1( "AT+CPIN?\r\n" );			//查询是否需要输入PIN码，如果返回"READY"则不需要输入密码
+	else if(SBUF=='2')
+		SendStr1( "AT+CSQ\r\n" );			//查询信号强度
+	else if(SBUF=='3')
+		SendStr1( "AT+CREG?\r\n" );
+	else if(SBUF=='4')
+		{
+			SendStr1( "AT+CGATT?\r\n" );
+		}
+	else if(SBUF=='5')
+		{
+//			SendStr1( "AT+CGCLASS=\"B\"\r\n" );					//设置移动台类别，连接方式，接入点和附着FPRS业务
+//			delay(50000);
+//			SendStr1( "AT+CGDCONT=1,\"IP\",\"CMNET\"\r\n" );
+//			delay(50000);
+//			SendStr1( "AT+CGATT=1\r\n" );
+//			delay(50000);
+			SendStr1( "AT+CSTT=\"CMNET\"\r\n" );
+			delay(50000);
+//			SendStr1( "AT+CIICR\r\n" );	
+//			SendStr1( "AT+CIPCSGP=1,\"CMNET\"\r\n" );
+			for(i=60000;i>0;i--)
+			delay(60000);
+
+//			SendStr1( "AT+CIICR\r\n" );							//激活移动场景，发起GPRS或CSD无线连接
+//			delay(50000);
+//			SendStr1( "AT+CIPSTART=\"TCP\",\"180.120.52.222\",\"8086\"\r\n" );
+		}
+	else if(SBUF=='6')												//建立TCP连接
+		{
+//			SendStr1( "AT+CLPORT=\"TCP\",\"2000\"\r\n" );			//设置本地端口为2000
+//			delay(50000);
+			SendStr1( "AT+CIICR\r\n" );	
+//			SendStr1( "AT+CIPSTART=\"TCP\",\"211.149.226.135\",\"8088\"\r\n" );
+		}
+	else if(SBUF=='7')												//查询连接状态
+		{
+			SendStr1( "AT+CIPSTART=\"TCP\",\"211.149.226.135\",\"10002\"\r\n" );
+//			SendStr1( "AT+CIPSTATUS\r\n" );							//
+//			delay(50000);
+//			SendStr1( "AT+CIPSTART=\"TCP\",\"211.149.226.135\",\"8088\"\r\n" );	//118.114.211.98
+		}
+	else if(SBUF=='8')												//关闭TCP/UDP连接
+		{
+//			SendStr1( "AT+CIPCLOSE=1\r\n" );
+			SendStr1("AT+CIPSEND\r\n");
+//			SendStr1("TDS10000000000100151.0000\n");
+//			SendStr1("TDS20000000000100151.0000\n");
+//			SendStr1("WD0000000000100016.0000\n");
+//			SendStr1("XD0000000000100081.0000\n");
+//			SendStr1("LL0000000000100012.0000\n");
+//			SendStr1("KG00000000001001\n");						//
+//			delay(50000);
+//			SendStr1( "AT+CIPSTART=\"TCP\",\"211.149.226.135\",\"8088\"\r\n" );
+		}
+	else if(SBUF=='9')												//查询本机IP地址
+		{
+			SendStr1( "AT+CIFSR\r\n" );								//
+
+		}
+	else
+		{
+			uart0_data[uart0_cnt1] = SBUF;
+			if(uart0_cnt1==199)
+				uart0_cnt1 = 0;
+			else
+				uart0_cnt1++;
+		}
+//	BELL = ON;
+	for(i=100;i>0;i--)
+		delay(50000);
+//	BELL = OFF;
+}
+
+//----------------------------------------------------------------
+//串口1中断程序
+void uart1() interrupt 8
+{
+	unsigned char i;
+	S2CON &= B1111_1110;
+	uart1_data[uart1_cnt1] = S2BUF;
+	if(uart1_cnt1==199)
+		uart1_cnt1 = 0;
+	else
+		uart1_cnt1++;
+
+//	if(S2BUF=='\n')
+//		uart1_B = 1;
+
+
+	if(S2BUF=='>')
+		{
+			if(send_B==1)
+			{
+				for( i=0;i<15;i++ )
+					u1send(JC[i]);
+				for( i=0;i<15;i++ )
+					u1send(TDS1[i]);
+				for( i=0;i<15;i++ )
+					u1send(TDS2[i]);
+				for( i=0;i<15;i++ )
+					u1send(WD[i]);
+				for( i=0;i<15;i++ )
+					u1send(XD[i]);
+				for( i=0;i<15;i++ )
+					u1send(LL[i]);
+				for( i=0;i<14;i++ )
+					u1send(KG[i]);
+				u1send(0x1A);
+//				send_B = 0;
+//				send_BT= 0;
+			}
+			else
+			{
+				SendStr1( "Test!\n" );
+				u1send(0x1A);
+//				send_BT= 0;
+			}
+		}
+}
+
+//----------------------------------------------------------------
+//定时器1中断程序
+/*void t0int() interrupt 1
+{
+	hr_data++;
+}*/
+
+//----------------------------------------------------------------
+//外部中断0中断程序，流量计监控
+void t0int() interrupt 0
+{
+	unsigned char i,j;
+	j=0;
+//	BELL = ON;
+	if(LL_D[6]<9)							//第1位
+		LL_D[6] = LL_D[6]+1;
+	else
+		{
+			LL_D[6] = 0;
+			j = 1;
+		}
+	if(j==1)								//第2位
+		{
+			if(LL_D[5]<10)
+				{
+					LL_D[5] = LL_D[5]+1;
+					j = 0;
+				}
+			else
+				{
+					LL_D[5] = 0;
+					j = 1;
+				}
+		}
+	if(j==1)								//第3位
+		{
+			if(LL_D[4]<10)
+				{
+					LL_D[4] = LL_D[4]+1;
+					j = 0;
+				}
+			else
+				{
+					LL_D[4] = 0;
+					j = 1;
+				}
+		}
+	if(j==1)								//第4位
+		{
+			if(LL_D[3]<10)
+				{
+					LL_D[3] = LL_D[3]+1;
+					j = 0;
+				}
+			else
+				{
+					LL_D[3] = 0;
+					j = 1;
+				}
+		}
+	if(j==1)								//第5位
+		{
+			if(LL_D[2]<10)
+				{
+					LL_D[2] = LL_D[2]+1;
+					j = 0;
+				}
+			else
+				{
+					LL_D[2] = 0;
+					j = 1;
+				}
+		}
+	if(j==1)								//第6位
+		{
+			if(LL_D[1]<10)
+				{
+					LL_D[1] = LL_D[1]+1;
+					j = 0;
+				}
+			else
+				{
+					LL_D[1] = 0;
+					j = 1;
+				}
+		}
+	if(j==1)								//第7位
+		{
+			if(LL_D[0]<5488)
+				{
+					LL_D[0] = LL_D[0]+1;
+					j = 0;
+				}
+			else
+				{
+					LL_D[0] = 0;
+					j = 0;
+				}
+		}
+
+	ll_cnt();	
+//	for(i=0;i<7;i++)
+//	{
+//		LL[i+2]=ASCLL_Char[LL_D[i]];
+//	}
+
+	if(LL_data<10)
+		LL_data++;
+	else
+		{
+			LL_data = 0;
+			IapEraseSector(LL_Addr);
+			for(i=0;i<7;i++)
+				{
+					IapProgramByte((LL_Addr+i),LL_D[i]);
+				}
+		}
+}
+
+//----------------------------------------------------------------
+//漏水检测
+void LS_CHEAK()
+{
+	if(LSBH==0)
+		{
+		RELAY_JS = ON;
+		RELAY_ZY = OFF;
+		KG[2] = ASCLL_Char[0];				//电磁阀状态位
+		KG[5] = ASCLL_Char[0];				//增压泵状态位
+		KG[7] = ASCLL_Char[1];				//漏水状态位
+		}
+	else
+		{
+		RELAY_JS = OFF;
+		RELAY_ZY = ON;
+		KG[2] = ASCLL_Char[1];				//电磁阀状态位
+		KG[5] = ASCLL_Char[1];				//增压泵状态位
+		KG[7] = ASCLL_Char[0];				//漏水状态位
+		}
+}
+//----------------------------------------------------------------
+//定时器1中断程序
+void t1int() interrupt 3
+{
+//定时计数，计数基数200uS，定时1S
+	if(ds_data1==0)
+		{
+			ds_data3 = 0;					//定时发送计数器
+			ds_data4++;
+			if(ds_data4>20)
+				IAP_CONTR = 0x20;
+			ds_data2++;
+//			if(ds_data7<10)
+//				ds_data7++;
+
+			if(ds_data2==td_data)			//达到定时发送时间，置位定时发送标志
+				{
+					send_B = 1;
+					ds_data2 = 0;
+//					ds_data7 = 0;
+					//SendStr0( "Time OK!\n" );
+				}
+			else if(ds_data2>td_data)
+				ds_data2 = 0;
+
+			if(td_data>20)
+				{
+					if((ds_data2>0)&&!(ds_data2%10))
+						{
+							if((td_data-ds_data2)>10)
+								{
+//									ds_data7 = 0;
+									send_BT = 1;
+								}
+						}
+				}
+		}
+//	else
+//		ds_data3++;
+//	if(ds_data<td_data)
+//		{
+//			if(ds_data>3)
+//				send_B = 0;
+//		}
+/*	if(td_data>60)
+		{
+			SendStr0( "Time Error!\n" );
+			Load_parameter();
+		}*/
+
+//湿度检测脉冲计数
+	if(ds_data5==10)
+		ds_data5 = 0;
+	else
+		ds_data5++;
+
+ //产生湿度传感器脉冲
+	if(ds_data5==0)
+		{
+			hr_ctr1 = ON;
+			hr_ctr2 = OFF;
+		}
+	else if(ds_data5==6)
+		{
+			hr_ctr1 = OFF;
+			hr_ctr2 = ON;
+		}
+
+//进水TDS值检测计时
+	if(tds_in_B==1)
+		{
+		tds_in_data++;
+//		BELL = 1;
+		}
+//出水TDS值检测计时
+	if(tds_out_B==1)
+		tds_out_data++;
+
+//SYS_LED灯闪烁频率控制
+	if(ds_data1>4999)		//定时1S
+		{
+			SYS_LED = ~SYS_LED;
+			ds_data1 = 0;
+		}
+	else
+		ds_data1++;
+}
+
+
+//----------------------------------------------------------------
+//LED显示程序
+void led_disp()
+{
+	unsigned char xdata a,b,i,k;
+
+	a = 0;
+	k = 4;
+	
+	LED_DATA = 1;
+	LED_RCK	 = 0;
+	LED_SCK  = 0;
+
+	while(a<5)
+	{
+		i = 0x01;
+		for(b=8;b>0;b--)
+		{
+			if( LED_Char[ LED_BUF[k] ]&i )
+				LED_DATA = 0;
+			else
+				LED_DATA =1;
+			i=i<<1;
+//			~LED_DATA;
+			delay(2);
+			LED_SCK = 1;
+			delay(2);
+			LED_SCK = 0;
+		}
+		a++;
+		k--;
+	}
+
+
+	LED_RCK  = 1;
+	delay(10);
+	LED_RCK = 0;
+}
+
+//----------------------------------------------------------------
+//UART0发送字节程序
+void u0send(unsigned char a)
+{
+	ES = OFF;			//关闭串口中断
+
+	SBUF = a;
+	while(~TI);
+
+	TI = 0;
+	ES = ON;
+}
+
+//----------------------------------------------------------------
+//UART1发送字节程序
+void u1send(unsigned char a)
+{
+	IE2 &=B1111_1110; 		//关闭UART1中断
+
+	S2BUF = a;
+	while(!(S2CON&B0000_0010));
+
+	S2CON &= B1111_1101;	//清零TI位
+	IE2 |=B0000_0001; 		//打开UART1中断
+}
+
+//----------------------------------------------------------------
+//UART0发送字符串
+void SendStr0(unsigned char *s)
+{
+//	ES = OFF;			//关闭串口中断
+
+ 	while(*s!='\0')		// \0 表示字符串结束标志，通过检测是否字符串末尾
+  	{
+  		u0send(*s);
+  		s++;
+  	}
+
+//	ES = ON;			//开中断
+}
+
+
+//----------------------------------------------------------------
+//UART1发送字符串
+void SendStr1(unsigned char *s)
+{
+//	IE2 &=B1111_1110; 		//关闭UART1中断
+
+ 	while(*s!='\0')		// \0 表示字符串结束标志，通过检测是否字符串末尾
+  	{
+  		u1send(*s);
+  		s++;
+  	}
+
+//	S2CON &= B1111_1110;	//清零TI位
+//	IE2 |=B0000_0001; 		//打开UART1中断
+}
+
+//----------------------------------------------------------------
+//清除缓存数据
+void cr_gsm_rcv()
+{
+	unsigned char xdata i;
+	for(i=0;i<200;i++)
+		gsm_rcv[i] = '\0';
+}
+
+//----------------------------------------------------------------
+//状态回显
+void u0_disp()
+{
+	for(; uart1_cnt2!=uart1_cnt1; )
+		{
+			u0send(uart1_data[uart1_cnt2]);
+			if(uart1_cnt2==199)
+				uart1_cnt2 = 0;
+			else
+				uart1_cnt2++;
+		}
+}
+
+//----------------------------------------------------------------
+//IAP关闭
+void IapIdle()
+{
+	IAP_CONTR	=0;
+	IAP_CMD		=0;
+	IAP_TRIG	=0;
+	IAP_ADDRH	=0x80;
+	IAP_ADDRL	=0x00;
+}
+
+//----------------------------------------------------------------
+//IAP读取字节
+unsigned char IapReadByte(unsigned int addr)
+{
+	unsigned char xdata dat;
+
+	IAP_CONTR = ENABLE_IAP;			//使能IAP
+	IAP_CMD = CMD_READ;				//设置IAP命令
+	IAP_ADDRL = addr;				//设置IAP低地址
+	IAP_ADDRH = addr>>8;			//设置IAP高地址
+	IAP_TRIG = 0x5A;				//写触发命令(0x5a)
+	IAP_TRIG = 0xA5;				//写触发命令(0xa5)
+	delay(1);						//命令执行延时
+	dat = IAP_DATA;					//读取ISP/IAP/EEPROM数据
+
+	IapIdle();						//关闭IAP功能
+
+	return	dat;					//返回数据
+}
+
+//----------------------------------------------------------------
+//IAP写字节
+void IapProgramByte(unsigned int addr,unsigned char dat)
+{
+	IAP_CONTR = ENABLE_IAP;			//使能IAP
+	IAP_CMD = CMD_PROGRAM;			//设置IAP命令
+	IAP_ADDRL = addr;				//设置IAP低地址
+	IAP_ADDRH = addr>>8;			//设置IAP高地址
+	IAP_DATA = dat;					//写ISP/IAP/EEPROM数据
+	IAP_TRIG = 0x5A;				//写触发命令(0xa5)
+	IAP_TRIG = 0xA5;				//写触发命令(0xa5)
+	delay(2);
+
+	IapIdle();						//关闭IAP功能
+}
+
+//----------------------------------------------------------------
+//IAP擦除
+void IapEraseSector(unsigned int addr)
+{
+	IAP_CONTR = ENABLE_IAP;			//使能IAP
+	IAP_CMD = CMD_ERASE;			//设置IAP命令
+	IAP_ADDRL = addr;				//设置IAP低地址
+	IAP_ADDRH = addr>>8;			//设置IAP高地址
+	IAP_TRIG = 0x5A;				//写触发命令(0x5a)
+	IAP_TRIG = 0xA5;				//写触发命令(0xa5)
+
+	delay(100);						//命令执行延时	
+
+	IapIdle();						//关闭IAP功能
+}
+
+//----------------------------------------------------------------
+//流量计算
+void ll_cnt()
+{
+	LL_data1=(LL_D[0]*1000000)+(LL_D[1]*100000)+(LL_D[2]*10000)+(LL_D[3]*1000)+(LL_D[4]*100)+(LL_D[5]*10)+LL_D[6];
+	LL_data2=LL_data1/2280;
+	LL[2] = ASCLL_Char[LL_data2/1000000];
+	LL_data2 = LL_data2%1000000;
+	LL[3] = ASCLL_Char[LL_data2/100000];
+	LL_data2 = LL_data2%100000;
+	LL[4] = ASCLL_Char[LL_data2/10000];
+	LL_data2 = LL_data2%10000;
+	LL[5] = ASCLL_Char[LL_data2/1000];
+	LL_data2 = LL_data2%1000;
+	LL[6] = ASCLL_Char[LL_data2/100];
+	LL_data2 = LL_data2%100;
+	LL[7] = ASCLL_Char[LL_data2/10];
+	LL_data2 = LL_data2%10;
+	LL[8] = ASCLL_Char[LL_data2];
+
+	LL_data2=(LL_data1%2280)*438/100;
+	LL[10] = ASCLL_Char[LL_data2/1000];
+	LL_data2 = LL_data2%1000;
+	LL[11] = ASCLL_Char[LL_data2/100];
+	LL_data2 = LL_data2%100;
+	LL[12] = ASCLL_Char[LL_data2/10];
+	LL_data2 = LL_data2%10;
+	LL[13] = ASCLL_Char[LL_data2];
+}
+//----------------------------------------------------------------
+//温度检测
+void TEMP_CHEAK()
+{
+	unsigned char temp_zf,temp,temp_d;
+	ADC_CONTR &= 0xF8;
+	ADC_CONTR = ADC_CONTR|ADC_TEMP|ADC_START;
+	while(!(ADC_CONTR&ADC_FLAG));
+	ADC_CONTR&=~ADC_FLAG;
+
+//	u0send(ADC_RESL);
+//	u0send(ADC_RES);
+	temp_data = ADC_RES;
+	temp_data = temp_data<<8;
+	temp_data = temp_data+ADC_RESL;
+
+	//热敏电阻值计算
+	temp_data = 10000*temp_data/(1023-temp_data);
+
+	if(temp_data>=55340)			//-10
+		{
+			temp_zf = 1;
+			temp = 10;
+			temp_d = 0;
+		}
+	else if(temp_data>=52420)	//-9
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-52420)/(55340-52420);
+			if(temp_d==10)
+				{
+					temp = 10;
+					temp_d = 0;
+				}
+			else
+				temp = 9;		
+		}
+	else if(temp_data>=49660)	//-8
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-49660)/(52420-49660);
+			if(temp_d==10)
+				{
+					temp = 9;
+					temp_d = 0;
+				}
+			else
+				temp = 8;
+		}
+	else if(temp_data>=47080)	//-7
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-47080)/(49660-47080);
+			if(temp_d==10)
+				{
+					temp = 8;
+					temp_d = 0;
+				}
+			else
+				temp = 7;	
+		}
+	else if(temp_data>=44640)	//-6
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-44640)/(47080-44640);
+			if(temp_d==10)
+				{
+					temp = 7;
+					temp_d = 0;
+				}
+			else
+				temp = 6;		
+		}
+	else if(temp_data>=42340)	//-5
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-42340)/(44640-42340);
+			if(temp_d==10)
+				{
+					temp = 6;
+					temp_d = 0;
+				}
+			else
+				temp = 5;	
+		}
+	else if(temp_data>=40160)	//-4
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-40160)/(42340-40160);
+			if(temp_d==10)
+				{
+					temp = 5;
+					temp_d = 0;
+				}
+			else
+				temp = 4;		
+		}
+	else if(temp_data>=38120)	//-3
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-38120)/(40160-38120);
+			if(temp_d==10)
+				{
+					temp = 4;
+					temp_d = 0;
+				}
+			else
+				temp = 3;	
+		}
+	else if(temp_data>=36200)	//-2
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-36200)/(38120-36200);
+			if(temp_d==10)
+				{
+					temp = 3;
+					temp_d = 0;
+				}
+			else
+				temp = 2;
+		}
+	else if(temp_data>=34380)	//-1
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-34380)/(36200-34380);
+			if(temp_d==10)
+				{
+					temp = 2;
+					temp_d = 0;
+				}
+			else
+				temp = 1;	
+		}
+	else if(temp_data>=32660)	//0
+		{
+			temp_zf = 1;
+			temp_d = 10*(temp_data-32660)/(34380-32660);
+			if(temp_d==10)
+				{
+					temp = 1;
+					temp_d = 0;
+				}
+			else
+				temp = 0;
+		}
+	else if(temp_data>=31040)	//1
+		{
+			temp_zf = 0;
+			temp_d = 10*(32260-temp_data)/(32260-31040);
+			if(temp_d==10)
+				{
+					temp = 1;
+					temp_d = 0;
+				}
+			else
+				temp = 0;
+		}
+	else if(temp_data>=29500)	//2
+		{
+			temp_zf = 0;
+			temp_d = 10*(31040-temp_data)/(31040-29500);
+			if(temp_d==10)
+				{
+					temp = 2;
+					temp_d = 0;
+				}
+			else
+				temp = 1;		
+		}
+	else if(temp_data>=28060)	//3
+		{
+			temp_zf = 0;
+			temp_d = 10*(29500-temp_data)/(29500-28060);
+			if(temp_d==10)
+				{
+					temp = 3;
+					temp_d = 0;
+				}
+			else
+				temp = 2;
+		}
+	else if(temp_data>=26680)	//4
+		{
+			temp_d = 10*(28060-temp_data)/(28060-26680);
+			if(temp_d==10)
+				{
+					temp = 4;
+					temp_d = 0;
+				}
+			else
+				temp = 3;	
+		}
+	else if(temp_data>=25400)	//5
+		{
+			temp_d = 10*(26680-temp_data)/(26680-25400);
+			if(temp_d==10)
+				{
+					temp = 5;
+					temp_d = 0;
+				}
+			else
+				temp = 4;
+		}
+	else if(temp_data>=24180)	//6
+		{
+			temp_zf = 0;
+			temp_d = 10*(25400-temp_data)/(25400-24180);
+			if(temp_d==10)
+				{
+					temp = 6;
+					temp_d = 0;
+				}
+			else
+				temp = 5;
+		}
+	else if(temp_data>=23020)	//7
+		{
+			temp_zf = 0;
+			temp_d = 10*(24180-temp_data)/(24180-23020);
+			if(temp_d==10)
+				{
+					temp = 7;
+					temp_d = 0;
+				}
+			else
+				temp = 6;
+		}
+	else if(temp_data>=21920)	//8
+		{
+			temp_zf = 0;
+			temp_d = 10*(23020-temp_data)/(23020-21920);
+			if(temp_d==10)
+				{
+					temp = 8;
+					temp_d = 0;
+				}
+			else
+				temp = 7;
+		}
+	else if(temp_data>=20880)	//9
+		{
+			temp_zf = 0;
+			temp_d = 10*(21920-temp_data)/(21920-20880);
+			if(temp_d==10)
+				{
+					temp = 9;
+					temp_d = 0;
+				}
+			else
+				temp = 8;
+		}
+	else if(temp_data>=19900)	//10
+		{
+			temp_zf = 0;
+			temp_d = 10*(20880-temp_data)/(20880-19900);
+			if(temp_d==10)
+				{
+					temp = 10;
+					temp_d = 0;
+				}
+			else
+				temp = 9;
+		}
+	else if(temp_data>=18970)	//11
+		{
+			temp_zf = 0;
+			temp_d = 10*(19900-temp_data)/(19900-18970);
+			if(temp_d==10)
+				{
+					temp = 11;
+					temp_d = 0;
+				}
+			else
+				temp = 10;
+		}
+	else if(temp_data>=18290)	//12
+		{
+			temp_zf = 0;
+			temp_d = 10*(18970-temp_data)/(18970-18290);
+			if(temp_d==10)
+				{
+					temp = 12;
+					temp_d = 0;
+				}
+			else
+				temp = 11;
+		}
+	else if(temp_data>=17260)	//13
+		{
+			temp_zf = 0;
+			temp_d = 10*(18290-temp_data)/(18290-17260);
+			if(temp_d==10)
+				{
+					temp = 13;
+					temp_d = 0;
+				}
+			else
+				temp = 12;
+		}
+	else if(temp_data>=16460)	//14
+		{
+			temp_zf = 0;
+			temp_d = 10*(17260-temp_data)/(17260-16460);
+			if(temp_d==10)
+				{
+					temp = 14;
+					temp_d = 0;
+				}
+			else
+				temp = 13;
+		}
+	else if(temp_data>=15710)	//15
+		{
+			temp_zf = 0;
+			temp_d = 10*(16460-temp_data)/(16460-15710);
+			if(temp_d==10)
+				{
+					temp = 15;
+					temp_d = 0;
+				}
+			else
+				temp = 14;
+		}
+	else if(temp_data>=15000)	//16
+		{
+			temp_zf = 0;
+			temp_d = 10*(15710-temp_data)/(15710-15000);
+			if(temp_d==10)
+				{
+					temp = 16;
+					temp_d = 0;
+				}
+			else
+				temp = 15;
+		}
+	else if(temp_data>=14320)	//17
+		{
+			temp_zf = 0;
+			temp_d = 10*(15000-temp_data)/(15000-14320);
+			if(temp_d==10)
+				{
+					temp = 17;
+					temp_d = 0;
+				}
+			else
+				temp = 16;
+		}
+	else if(temp_data>=13680)	//18
+		{
+			temp_zf = 0;
+			temp_d = 10*(14320-temp_data)/(14320-13680);
+			if(temp_d==10)
+				{
+					temp = 18;
+					temp_d = 0;
+				}
+			else
+				temp = 17;
+		}
+	else if(temp_data>=13070)	//19
+		{
+			temp_zf = 0;
+			temp_d = 10*(13680-temp_data)/(13680-13070);
+			if(temp_d==10)
+				{
+					temp = 19;
+					temp_d = 0;
+				}
+			else
+				temp = 18;
+		}
+	else if(temp_data>=12490)	//20
+		{
+			temp_zf = 0;
+			temp_d = 10*(13070-temp_data)/(13070-12490);
+			if(temp_d==10)
+				{
+					temp = 20;
+					temp_d = 0;
+				}
+			else
+				temp = 19;
+		}
+	else if(temp_data>=11940)	//21
+		{
+			temp_zf = 0;
+			temp_d = 10*(12490-temp_data)/(12490-11940);
+			if(temp_d==10)
+				{
+					temp = 21;
+					temp_d = 0;
+				}
+			else
+				temp = 20;
+		}
+	else if(temp_data>=11420)	//22
+		{
+			temp_zf = 0;
+			temp_d = 10*(11940-temp_data)/(11940-11420);
+			if(temp_d==10)
+				{
+					temp = 22;
+					temp_d = 0;
+				}
+			else
+				temp = 21;
+		}
+	else if(temp_data>=10920)	//23
+		{
+			temp_zf = 0;
+			temp_d = 10*(11420-temp_data)/(11420-10920);
+			if(temp_d==10)
+				{
+					temp = 23;
+					temp_d = 0;
+				}
+			else
+				temp = 22;
+		}
+	else if(temp_data>=10450)	//24
+		{
+			temp_zf = 0;
+			temp_d = 10*(10920-temp_data)/(10920-10450);
+			if(temp_d==10)
+				{
+					temp = 24;
+					temp_d = 0;
+				}
+			else
+				temp = 23;
+		}
+	else if(temp_data>=10000)	//25
+		{
+			temp_zf = 0;
+			temp_d = 10*(10450-temp_data)/(10450-10000);
+			if(temp_d==10)
+				{
+					temp = 25;
+					temp_d = 0;
+				}
+			else
+				temp = 24;
+		}
+	else if(temp_data>=9574)	//26
+		{
+			temp_zf = 0;
+			temp_d = 10*(10000-temp_data)/(10000-9574);
+			if(temp_d==10)
+				{
+					temp = 26;
+					temp_d = 0;
+				}
+			else
+				temp = 25;
+		}
+	else if(temp_data>=9166)	//27
+		{
+			temp_zf = 0;
+			temp_d = 10*(9574-temp_data)/(9574-9166);
+			if(temp_d==10)
+				{
+					temp = 27;
+					temp_d = 0;
+				}
+			else
+				temp = 26;
+		}
+	else if(temp_data>=8778)	//28
+		{
+			temp_zf = 0;
+			temp_d = 10*(9166-temp_data)/(9166-8778);
+			if(temp_d==10)
+				{
+					temp = 28;
+					temp_d = 0;
+				}
+			else
+				temp = 27;
+		}
+	else if(temp_data>=8480)	//29
+		{
+			temp_zf = 0;
+			temp_d = 10*(8778-temp_data)/(8778-8480);
+			if(temp_d==10)
+				{
+					temp = 29;
+					temp_d = 0;
+				}
+			else
+				temp = 28;
+		}
+	else if(temp_data>=8058)	//30
+		{
+			temp_zf = 0;
+			temp_d = 10*(8480-temp_data)/(8480-8058);
+			if(temp_d==10)
+				{
+					temp = 30;
+					temp_d = 0;
+				}
+			else
+				temp = 29;
+		}
+
+//
+	if(temp_data<=3602)	//50
+		{
+			temp_zf = 0;
+			temp = 50;			
+			temp_d = 0;
+		}
+	else if(temp_data<=3742)	//49
+		{
+			temp_zf = 0;
+			temp_d = 10*(3742-temp_data)/(3742-3602);
+			if(temp_d==10)
+				{
+					temp = 50;
+					temp_d = 0;
+				}
+			else
+				temp = 49;
+		}
+	else if(temp_data<=3888)	//48
+		{
+			temp_zf = 0;
+			temp_d = 10*(3888-temp_data)/(3888-3742);
+			if(temp_d==10)
+				{
+					temp = 49;
+					temp_d = 0;
+				}
+			else
+				temp = 48;
+		}
+	else if(temp_data<=4042)	//47
+		{
+			temp_zf = 0;
+			temp_d = 10*(4042-temp_data)/(4042-3888);
+			if(temp_d==10)
+				{
+					temp = 48;
+					temp_d = 0;
+				}
+			else
+				temp = 47;
+		}
+	else if(temp_data<=4202)	//46
+		{
+			temp_zf = 0;
+			temp_d = 10*(4202-temp_data)/(4202-4042);
+			if(temp_d==10)
+				{
+					temp = 47;
+					temp_d = 0;
+				}
+			else
+				temp = 46;
+		}
+	else if(temp_data<=4368)	//45
+		{
+			temp_zf = 0;
+			temp_d = 10*(4368-temp_data)/(4368-4202);
+			if(temp_d==10)
+				{
+					temp = 46;
+					temp_d = 0;
+				}
+			else
+				temp = 45;
+		}
+	else if(temp_data<=4544)	//44
+		{
+			temp_zf = 0;
+			temp_d = 10*(4544-temp_data)/(4544-4368);
+			if(temp_d==10)
+				{
+					temp = 45;
+					temp_d = 0;
+				}
+			else
+				temp = 44;
+		}
+	else if(temp_data<=4726)	//43
+		{
+			temp_zf = 0;
+			temp_d = 10*(4726-temp_data)/(4726-4544);
+			if(temp_d==10)
+				{
+					temp = 44;
+					temp_d = 0;
+				}
+			else
+				temp = 43;
+		}
+	else if(temp_data<=4918)	//42
+		{
+			temp_zf = 0;
+			temp_d = 10*(4918-temp_data)/(4918-4726);
+			if(temp_d==10)
+				{
+					temp = 43;
+					temp_d = 0;
+				}
+			else
+				temp = 42;
+		}
+	else if(temp_data<=5118)	//41
+		{
+			temp_zf = 0;
+			temp_d = 10*(5118-temp_data)/(5118-4918);
+			if(temp_d==10)
+				{
+					temp = 42;
+					temp_d = 0;
+				}
+			else
+				temp = 41;
+		}
+	else if(temp_data<=5326)	//40
+		{
+			temp_zf = 0;
+			temp_d = 10*(5326-temp_data)/(5326-5118);
+			if(temp_d==10)
+				{
+					temp = 41;
+					temp_d = 0;
+				}
+			else
+				temp = 40;
+		}
+	else if(temp_data<=5546)	//39
+		{
+			temp_zf = 0;
+			temp_d = 10*(5546-temp_data)/(5546-5326);
+			if(temp_d==10)
+				{
+					temp = 40;
+					temp_d = 0;
+				}
+			else
+				temp = 39;
+		}
+	else if(temp_data<=5776)	//38
+		{
+			temp_zf = 0;
+			temp_d = 10*(5776-temp_data)/(5776-5546);
+			if(temp_d==10)
+				{
+					temp = 39;
+					temp_d = 0;
+				}
+			else
+				temp = 38;
+		}
+	else if(temp_data<=6015)	//37
+		{
+			temp_zf = 0;
+			temp_d = 10*(6015-temp_data)/(6015-5776);
+			if(temp_d==10)
+				{
+					temp = 38;
+					temp_d = 0;
+				}
+			else
+				temp = 37;
+		}
+	else if(temp_data<=6268)	//36
+		{
+			if(temp_data==6268)
+				{
+					temp_zf = 0;
+					temp = 36;			
+					temp_d = 0;
+				}
+			else
+				{
+					temp_zf = 0;
+					temp_d = 10*(6268-temp_data)/(6268-6015);
+					if(temp_d==10)
+						{
+							temp = 37;
+							temp_d = 0;
+						}
+					else
+						temp = 36;
+				}
+		}
+	else if(temp_data<=6532)	//35
+		{
+			if(temp_data==6532)
+				{
+					temp_zf = 0;
+					temp = 35;			
+					temp_d = 0;
+				}
+			else
+				{
+					temp_zf = 0;
+					temp_d = 10*(6532-temp_data)/(6532-6268);
+					if(temp_d==10)
+						{
+							temp = 36;
+							temp_d = 0;
+						}
+					else
+						temp = 35;
+				}
+		}
+	else if(temp_data<=6808)	//34
+		{
+			temp_zf = 0;
+			temp_d = 10*(6808-temp_data)/(6808-6532);
+			if(temp_d==10)
+				{
+					temp = 35;
+					temp_d = 0;
+				}
+			else
+				temp = 34;
+		}
+	else if(temp_data<=7098)	//33
+		{
+			temp_zf = 0;
+			temp_d = 10*(7098-temp_data)/(7098-6808);
+			if(temp_d==10)
+				{
+					temp = 34;
+					temp_d = 0;
+				}
+			else
+				temp = 33;
+		}
+	else if(temp_data<=7404)	//32
+		{
+			temp_zf = 0;
+			temp_d = 10*(7404-temp_data)/(7404-7098);
+			if(temp_d==10)
+				{
+					temp = 33;
+					temp_d = 0;
+				}
+			else
+				temp = 32;
+		}
+	else if(temp_data<=7724)	//31
+		{
+			temp_zf = 0;
+			temp_d = 10*(7724-temp_data)/(7724-7404);
+			if(temp_d==10)
+				{
+					temp = 32;
+					temp_d = 0;
+				}
+			else
+				temp = 31;
+		}
+	 else	if(temp_data<=8058)	//30
+	 	{
+			temp_zf = 0;
+			temp_d = 10*(8058-temp_data)/(8058-7724);
+			if(temp_d==10)
+				{
+					temp = 31;
+					temp_d = 0;
+				}
+			else
+				temp = 30;
+		}
+
+
+	WD[6] = ASCLL_Char[temp_zf];
+	WD[7] = ASCLL_Char[temp/10];
+	WD[8] = ASCLL_Char[temp%10];
+	WD[10] = ASCLL_Char[temp_d];
+}
+
+//----------------------------------------------------------------
+//湿度检测
+void HR_CHEAK()
+{
+	unsigned char hr_data;
+	while(hr_ctr1);
+	while(!hr_ctr1);
+	while(ds_data5<2);
+	ADC_CONTR &= 0xF8;
+	ADC_CONTR = ADC_CONTR|ADC_HR|ADC_START;
+	while(!(ADC_CONTR&ADC_FLAG));
+	ADC_CONTR&=~ADC_FLAG;
+
+//	u0send(ADC_RESL);
+//	u0send(ADC_RES);
+	hr_res = ADC_RES;
+	hr_res = hr_res<<8;
+	hr_res = hr_res+ADC_RESL;
+	hr_res = 330*(1000-hr_res)/(hr_res);
+//	u0send(hr_res);
+//	hr_res = hr_res>>8;
+//	u0send(hr_res);
+
+	if(hr_res>=50000)
+		hr_data = 20;
+	else if(hr_res>=26000)
+		{
+			hr_data = 25-(hr_res-26000)/((50000-26000)/5);
+		}
+	else if(hr_res>=13000)
+		{
+			hr_data = 30-(hr_res-13000)/((26000-13000)/5);
+		}
+	else if(hr_res>=6300)
+		{
+			hr_data = 35-(hr_res-6300)/((13000-6300)/5);
+		}
+	else if(hr_res>=3100)
+		{
+			hr_data = 40-(hr_res-3100)/((6300-3100)/5);
+		}
+	else if(hr_res>=1600)
+		{
+			hr_data = 45-(hr_res-1600)/((3100-1600)/5);
+		}
+	else if(hr_res>=870)
+		{
+			hr_data = 50-(hr_res-870)/((1600-870)/5);
+		}
+	else if(hr_res>=490)
+		{
+			hr_data = 55-(hr_res-490)/((870-490)/5);
+		}
+	else if(hr_res>=310)
+		{
+			hr_data = 60-(hr_res-310)/((490-310)/5);
+		}
+	else if(hr_res>=195)
+		{
+			hr_data = 65-(hr_res-195)/((310-195)/5);
+		}
+	else if(hr_res>=130)
+		{
+			hr_data = 70-(hr_res-130)/((195-130)/5);
+		}
+	else if(hr_res>=84)
+		{
+			hr_data = 75-(hr_res-84)/((130-84)/5);
+		}
+	else if(hr_res>=57)
+		{
+			hr_data = 80-(hr_res-57)/((84-57)/5);
+		}
+	else if(hr_res>=40)
+		{
+			hr_data = 85-(hr_res-40)/((57-40)/5);
+		}
+	else if(hr_res>=28)
+		{
+			hr_data = 90-(hr_res-28)/((40-28)/5);
+		}
+	else
+		hr_data = 91;
+
+
+	XD[7] = ASCLL_Char[hr_data/10];
+	XD[8] = ASCLL_Char[hr_data%10];
+
+
+/*	P1M0 = B0000_0000;			//放电
+	P1M1 = B1000_1100;
+	HR_h202 = 0;
+	HR_ref = 0;
+	HR_test = 0;
+	ds_data4 = 0;				//放电延时
+	while(ds_data4!=1);	
+
+	P1M0 = B0000_0000;
+	P1M1 = B1011_1100;
+	hr_h202_data = 0;
+	hr_data = 0;
+	TR0 = ON;
+	HR_h202 = ON;
+	while(!HR_test) BELL=ON;
+	BELL=OFF;
+	TR0 = OFF;
+	hr_h202_data = hr_data*65536+(TH0/256+TL0);		//hr202充电时间
+//	u0send(hr_data);
+//	hr_data = hr_data>>8;
+//	u0send(hr_data);
+
+	P1M0 = B0000_0000;			//放电
+	P1M1 = B1000_1100;
+	HR_h202 = 0;
+	HR_ref = 0;
+	HR_test = 0;
+	ds_data4 = 0;				//放电延时
+	while(ds_data4!=1);	
+
+	P1M0 = B0000_0000;
+	P1M1 = B1101_1100;
+	hr_ref_data = 0;
+	hr_data = 0;
+	TR0 = ON;
+	HR_ref = ON;
+	while(!HR_test);
+	TR0 = OFF;
+	hr_ref_data = hr_data*65536+(TH0/256+TL0);		//参考充电时间
+//	u0send(hr_data);
+//	hr_data = hr_data>>8;
+//	u0send(hr_data);
+
+	//计算电阻值
+	hr_res = hr_h202_data*100/hr_ref_data;
+
+	u0send(hr_res);
+	hr_res = hr_res>>8;
+	u0send(hr_res);*/
+
+	
+}
+
+//----------------------------------------------------------------
+//进水TDS值检测
+void TDS_IN_CHEAK()
+{
+	ds_data4 = 0;
+	while( (TDS_IN==1) && (ds_data4!=1) );
+	ds_data4 = 0;
+	while( (!TDS_IN) && (ds_data4!=1) );
+	tds_in_B = 1;
+	ds_data4 = 0;
+	while( (TDS_IN==1) && (ds_data4!=2) );//BELL=1;
+	if(TDS_IN==1)
+		tds_in_data = 0;
+	tds_in_B = 0;
+//	BELL = 0;
+	tds_data1 = tds_in_data;
+	TDS_COMP();
+	tds_data = tds_data%1000;
+	tds_data2= tds_data/100;
+	TDS1[6] =ASCLL_Char[tds_data2];
+	tds_data = tds_data%100;
+	tds_data2= tds_data/10;
+	TDS1[7] =ASCLL_Char[tds_data2];
+	tds_data2= tds_data%10;
+	TDS1[8] =ASCLL_Char[tds_data2];
+
+	
+	tds_in_data = 0;
+}
+
+//----------------------------------------------------------------
+//出水TDS值检测
+void TDS_OUT_CHEAK()
+{
+	ds_data4 = 0;
+	while( (TDS_OUT==1) && (ds_data4!=1) );
+	ds_data4 = 0;
+	while( (!TDS_OUT) && (ds_data4!=1) );
+	tds_out_B = 1;
+	ds_data4 = 0;
+	while( (TDS_OUT==1) && (ds_data4!=2) );//BELL=1;
+	if(TDS_OUT==1)
+		tds_out_data = 0;
+	tds_out_B = 0;
+//	BELL = 0;
+	tds_data1 = tds_out_data;
+	TDS_COMP();
+	tds_data = tds_data%1000;
+	tds_data2= tds_data/100;
+	TDS2[6] =ASCLL_Char[tds_data2];
+	tds_data = tds_data%100;
+	tds_data2= tds_data/10;
+	TDS2[7] =ASCLL_Char[tds_data2];
+	tds_data2= tds_data%10;
+	TDS2[8] =ASCLL_Char[tds_data2];
+
+	tds_out_data = 0;
+}
+
+//----------------------------------------------------------------
+//出水TDS计算
+void TDS_COMP()
+{
+	if(tds_data1>=(45*5))
+		{
+		tds_data = 40;
+		}
+	else if((tds_data1*2)>=195)					//TDS>=100
+		{
+			tds_data = 100;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=191)				//TDS>=106
+		{
+			tds_data = 106;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=185)				//TDS>=110
+		{
+			tds_data = 110;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=175)				//TDS>=116
+		{
+			tds_data = 116;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=171)				//TDS>=120
+		{
+			tds_data = 120;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=167)				//TDS>=126
+		{
+			tds_data = 126;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=161)				//TDS>=130
+		{
+			tds_data = 130;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=157)				//TDS>=134
+		{
+			tds_data = 134;
+//			tds_data1 = 0;
+		}
+	if((tds_data1*2)>=154)					//TDS>=138
+		{
+			tds_data = 138;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=151)				//TDS>=142
+		{
+			tds_data = 142;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=148)				//TDS>=146
+		{
+			tds_data = 146;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=144)				//TDS>=150
+		{
+			tds_data = 150;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=139)				//TDS>=154
+		{
+			tds_data = 154;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=135)				//TDS>=158
+		{
+			tds_data = 158;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=132)				//TDS>=162
+		{
+			tds_data = 162;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=129)				//TDS>=166
+		{
+			tds_data = 166;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=126)				//TDS>=170
+		{
+			tds_data = 170;
+//			tds_data1 = 0;
+		}
+	if((tds_data1*2)>=124)					//TDS>=174
+		{
+			tds_data = 174;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=121)				//TDS>=178
+		{
+			tds_data = 178;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=119)				//TDS>=182
+		{
+			tds_data = 182;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=116)				//TDS>=186
+		{
+			tds_data = 186;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=114)				//TDS>=190
+		{
+			tds_data = 190;
+//			tds_data1 = 0;
+		}
+	else if((tds_data1*2)>=112)				//TDS>=195
+		{
+			tds_data = 195;
+//			tds_data1 = 0;
+		}
+	else 									//TDS>=200
+		{
+			tds_data = 200;
+//			tds_data1 = 0;
+		}
+
+	if(tds_data1>=(83*5))					//TDS>=21
+		{
+			tds_data = 21;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(79*5))				//TDS>=22
+		{
+			tds_data = 22;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(76*5))				//TDS>=23
+		{
+			tds_data = 23;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(73*5))				//TDS>=24
+		{
+			tds_data = 24;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(70*5))				//TDS>=25
+		{
+			tds_data = 25;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(68*5))				//TDS>=26
+		{
+			tds_data = 26;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(66*5))				//TDS>=27
+		{
+			tds_data = 27;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(63*5))				//TDS>=28
+		{
+			tds_data = 28;
+//			tds_data1 = 0;
+		}
+	if(tds_data1>=(61*5))					//TDS>=29
+		{
+			tds_data = 29;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(58*5))				//TDS>=30
+		{
+			tds_data = 30;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(54*5))				//TDS>=32
+		{
+			tds_data = 32;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(52*5))				//TDS>=34
+		{
+			tds_data = 34;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(49*5))				//TDS>=36
+		{
+			tds_data = 36;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(47*5))				//TDS>=38
+		{
+			tds_data = 38;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(45*5))				//TDS>=40
+		{
+			tds_data = 40;
+//			tds_data1 = 0;
+		}
+
+	if(tds_data1>=(1320*5))					//TDS>=1
+		{
+			tds_data = 1;
+			tds_data1 = 0;
+		}
+	else if(tds_data1>=(720*5))				//TDS>=2，步进1.7
+		{
+			tds_data = 2;
+//			tds_data1 = 0;
+//			tds_data1 = ((890*5)-tds_data1)*10/17;
+		}
+	else if(tds_data1>=(504*5))				//TDS>=3，步进0.75
+		{
+			tds_data = 3;
+//			tds_data1 = 0;
+//			tds_data1 = ((550*5)-tds_data1)*100/75;
+		}
+	else if(tds_data1>=(404*5))				//TDS>=4，步进0.4
+		{
+			tds_data = 4;
+//			tds_data1 = 0;
+//			tds_data1 = ((400*5)-tds_data1)*10/4;
+		}
+	else if(tds_data1>=(332*5))				//TDS>=5，步进0.55
+		{
+			tds_data = 5;
+//			tds_data1 = ((320*5)-tds_data1)*100/55;
+		}
+	else if(tds_data1>=(264*5))				//TDS>=6，步进0.03
+		{
+			tds_data = 6;
+//			tds_data1 = ((210*5)-tds_data1)*100/3;
+		}
+	else if(tds_data1>=(236*5))				//TDS>=7，步进0.11
+		{
+			tds_data = 7;
+//			tds_data1 = ((204*5)-tds_data1)*100/11;
+		}
+	else if(tds_data1>=(212*5))				//TDS>=8，步进0.09
+		{
+			tds_data = 8;
+//			tds_data1 = ((182*5)-tds_data1)*100/9;
+			//BELL = 1;
+		}
+	else if(tds_data1>=(186*5))				//TDS>=9，步进0.11
+		{
+			tds_data = 9;
+//			tds_data1 = ((166*5)-tds_data1)*100/11;
+		}
+	else if(tds_data1>=(166*5))				//TDS>=10，步进0.13
+		{
+			tds_data = 10;
+//			tds_data1 = ((144*5)-tds_data1)*100/13;
+		}
+	else if(tds_data1>=(146*5))				//TDS>=11
+		{
+			tds_data = 11;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(137*5))				//TDS>=12
+		{
+			tds_data = 12;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(129*5))				//TDS>=13
+		{
+			tds_data = 13;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(122*5))				//TDS>=14
+		{
+			tds_data = 14;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(114*5))				//TDS>=15
+		{
+			tds_data = 15;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(104*5))				//TDS>=16
+		{
+			tds_data = 16;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(100*5))				//TDS>=17
+		{
+			tds_data = 17;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(96*5))				//TDS>=18
+		{
+			tds_data = 18;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(90*5))				//TDS>=19
+		{
+			tds_data = 19;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(87*5))				//TDS>=20
+		{
+			tds_data = 20;
+//			tds_data1 = 0;
+		}
+	else if(tds_data1>=(83*5))				//TDS>=21
+		{
+			tds_data = 21;
+//			tds_data1 = 0;
+		}
+}
+
+
+unsigned char xdata LED_Char[] = { 0xFC,0x60,0xDA,0xF2,0x66,0xB6,0xBE,0xE0,0xFE,0xF6,0x00,0xFF };
+unsigned char xdata ASCLL_Char[] = {48,49,50,51,52,53,54,55,56,57};
+
+
+//TDS值
+/*
+TDS值     脉宽(ms)
+1			890
+2			550
+3			400
+4			320
+5			210
+6			204
+7			182
+8			166
+9			144
+10			118
+11			116
+12			103
+13			100
+14			97
+15			88
+16			84
+17			80
+18			74
+19			69
+20			66
+21			64
+22			59
+23			55
+24			56
+25			54
+26			53
+27			52
+28			51
+29			48
+30			44
+32			43
+34			42
+36			36
+38			35
+40			34
+
+100			15
+102			14.5
+104			14
+106			13.8
+108			13.4
+110			13.2
+112			13
+114			12.8
+116			12.3
+118			12
+120			12.4
+122			11.6
+124			11.2
+126			11.2
+128			10.8
+130			10.8
+132			11.2
+134			10.4
+136			10.5
+138			10.5
+140			10.3
+142			10.7
+144			10.1
+146			10.3
+148			9.8
+150			9.5
+152			8.5
+154			9.3
+156			8.9
+158			8.9
+160			9.1
+162			9.2
+164			9.2
+166			8.9
+168			8.8
+170			9.3
+172			9.2
+174			8.6
+176			8.6
+178			8.9
+180			9.1
+185			8.4
+190			8.1
+195			7.8
+200			7.5
+//*/
